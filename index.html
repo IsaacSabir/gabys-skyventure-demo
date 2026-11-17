@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gaby's Skyventure — Official Android Arcade Adventure</title>
+  <meta name="description" content="Take to the skies with Gaby in his dinosaur hoodie! Dodge clockwork airships, collect star coins, and soar across world landmarks in Gaby's Skyventure for Android." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal-shadow: #0c7c94;
+      --gold-shadow: #c78b00;
+    }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #0f1c3f;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, .font-display {
+      font-family: 'Fredoka', sans-serif;
+    }
+    .logo-gaby {
+      background: linear-gradient(180deg, #7be3ff 0%, #1ea7fd 55%, #0b6bcb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 5px 0 #0a2463) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.45));
+    }
+    .logo-skyventure {
+      background: linear-gradient(180deg, #fff078 0%, #ffbe1a 60%, #f08a00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 0 #3b1d00) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45));
+    }
+    .toy-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      border-radius: 9999px;
+      border: 4px solid #fff6df;
+      transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+    .toy-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .toy-btn:active { transform: translateY(4px); }
+    .toy-btn-gold {
+      background: linear-gradient(180deg, #ffe066 0%, #ffbe1a 100%);
+      color: #3d2200;
+      box-shadow: 0 7px 0 var(--gold-shadow), 0 14px 24px rgba(0, 0, 0, 0.35);
+    }
+    .toy-btn-gold:active { box-shadow: 0 2px 0 var(--gold-shadow), 0 6px 12px rgba(0, 0, 0, 0.3); }
+    .toy-btn-teal {
+      background: linear-gradient(180deg, #4be1ff 0%, #14b0cf 100%);
+      color: #ffffff;
+      text-shadow: 0 2px 0 rgba(8, 76, 94, 0.6);
+      box-shadow: 0 7px 0 var(--teal-shadow), 0 14px 24px rgba(0, 0, 0, 0.35);
+    }
+    .toy-btn-teal:active { box-shadow: 0 2px 0 var(--teal-shadow), 0 6px 12px rgba(0, 0, 0, 0.3); }
+    .frame-easy { border: 5px solid #2ee5b5; box-shadow: 0 10px 0 #138a6b, 0 20px 35px rgba(0, 0, 0, 0.35); }
+    .frame-normal { border: 5px solid #ffd43b; box-shadow: 0 10px 0 #b8860b, 0 20px 35px rgba(0, 0, 0, 0.35); }
+    .frame-hard { border: 5px solid #ff6b6b; box-shadow: 0 10px 0 #a82828, 0 20px 35px rgba(0, 0, 0, 0.35); }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float { animation: floatSlow 4s ease-in-out infinite; }
+  </style>
+</head>
+<body class="antialiased selection:bg-amber-300 selection:text-slate-900">
+
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-[#0f1c3f]/80 border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-b from-amber-300 to-amber-500 p-1 shadow-lg border-2 border-[#fff6df] group-hover:scale-105 transition">
+          <div class="w-full h-full rounded-full bg-sky-500 flex items-center justify-center">
+            <svg class="w-7 h-7 text-white" viewBox="0 0 64 64" fill="none">
+              <path d="M10 36C10 22 20 12 32 12C44 12 54 22 54 36L50 48H14L10 36Z" fill="#4CAF50" stroke="#1B5E20" stroke-width="3"/>
+              <path d="M22 14L26 6L30 13M34 13L38 6L42 14" stroke="#FFD54F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="24" cy="24" r="3" fill="#FFF"/>
+              <circle cx="40" cy="24" r="3" fill="#FFF"/>
+              <circle cx="24" cy="24" r="1.5" fill="#1B5E20"/>
+              <circle cx="40" cy="24" r="1.5" fill="#1B5E20"/>
+              <path d="M20 38C20 31.5 25.4 27 32 27C38.6 27 44 31.5 44 38V46H20V38Z" fill="#FFCCBC"/>
+            </svg>
+          </div>
+        </div>
+        <div class="leading-none">
+          <span class="font-display text-2xl font-bold text-sky-300 tracking-wide block">Gaby's</span>
+          <span class="font-display text-sm font-bold text-amber-300 uppercase tracking-wider">Skyventure</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 font-bold text-sky-100">
+        <a href="#gallery" class="hover:text-amber-300 transition">Artwork</a>
+        <a href="#modes" class="hover:text-amber-300 transition">Flight Modes</a>
+        <a href="#rankings" class="hover:text-amber-300 transition">Rankings</a>
+        <a href="#install" class="hover:text-amber-300 transition">How to Install</a>
+      </nav>
+
+      <a href="https://github.com/IsaacSabir/gabys-skyventure-demo/releases/download/v0.0.5/Skyventure.apk" class="toy-btn toy-btn-teal px-5 py-2.5 text-base">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.523 15.3414C16.967 15.3414 16.515 14.8894 16.515 14.3334C16.515 13.7774 16.967 13.3254 17.523 13.3254C18.079 13.3254 18.531 13.7774 18.531 14.3334C18.531 14.8894 18.079 15.3414 17.523 15.3414ZM6.477 15.3414C5.921 15.3414 5.469 14.8894 5.469 14.3334C5.469 13.7774 5.921 13.3254 6.477 13.3254C7.033 13.3254 7.485 13.7774 7.485 14.3334C7.485 14.8894 7.033 15.3414 6.477 15.3414ZM17.882 9.2474L19.898 5.7554C20.011 5.5604 19.944 5.3114 19.749 5.1984C19.554 5.0854 19.305 5.1524 19.192 5.3474L17.151 8.8824C15.631 8.1894 13.876 7.7984 12 7.7984C10.124 7.7984 8.369 8.1894 6.849 8.8824L4.808 5.3474C4.695 5.1524 4.446 5.0854 4.251 5.1984C4.056 5.3114 3.989 5.5604 4.102 5.7554L6.118 9.2474C2.68 11.1164 0.341 14.6214 0 18.7504H24C23.659 14.6214 21.32 11.1164 17.882 9.2474Z"/>
+        </svg>
+        <span>Get APK</span>
+      </a>
+    </div>
+  </header>
+
+  <section class="relative pt-10 pb-20 lg:pt-16 lg:pb-28 bg-gradient-to-b from-[#1e3c8a] via-[#3b7dd8] to-[#0f1c3f]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="grid lg:grid-cols-12 gap-10 items-center">
+        <div class="lg:col-span-6 text-center lg:text-left space-y-6">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/25 text-amber-200 font-bold text-sm shadow-sm">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Version 0.0.5 • Free Direct Android Release</span>
+          </div>
+
+          <div class="leading-none">
+            <h1 class="font-display text-6xl sm:text-7xl font-bold logo-gaby tracking-tight">Gaby's</h1>
+            <p class="font-display text-4xl sm:text-5xl font-bold logo-skyventure -mt-1">Skyventure</p>
+          </div>
+
+          <p class="text-lg sm:text-xl text-sky-50/95 font-semibold leading-relaxed max-w-xl mx-auto lg:mx-0">
+            Strap into Gaby's trusty propeller plane, throw on your lucky dinosaur hoodie, and soar across iconic world landmarks! Dodge whimsical clockwork airships, collect glowing star coins, and top the global aviator leaderboards.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            <a href="https://github.com/IsaacSabir/gabys-skyventure-demo/releases/download/v0.0.5/Skyventure.apk" class="toy-btn toy-btn-gold px-8 py-4 text-xl w-full sm:w-auto">
+              <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
+                <path d="M12 16L7 11H10V4H14V11H17L12 16ZM5 18H19V20H5V18Z"/>
+              </svg>
+              <span>Download APK (Free)</span>
+            </a>
+
+            <a href="#install" class="toy-btn toy-btn-teal px-7 py-4 text-lg w-full sm:w-auto">
+              <span>How to Install</span>
+            </a>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-6 pt-2 text-sm text-sky-200 font-bold">
+            <span class="flex items-center gap-1.5">✅ Android 8.0+</span>
+            <span class="flex items-center gap-1.5">✅ Offline &amp; Global Scores</span>
+            <span class="flex items-center gap-1.5">✅ Kid-Friendly &amp; Ace Modes</span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6">
+          <div class="relative rounded-3xl p-2.5 bg-gradient-to-b from-amber-200 via-amber-400 to-amber-600 shadow-2xl animate-float">
+            <img src="assets/hero-art.jpg" alt="Gaby's Skyventure Promotional Key Art" class="w-full aspect-video object-cover rounded-2xl shadow-inner" />
+            <div class="absolute -bottom-5 -left-3 sm:-left-6 bg-[#132554] border-4 border-amber-300 rounded-2xl px-4 py-2.5 shadow-xl flex items-center gap-3">
+              <span class="text-3xl">⭐</span>
+              <div>
+                <p class="font-display font-bold text-amber-300 text-base leading-tight">Arcade Sky Action</p>
+                <p class="text-xs text-sky-200 font-bold">3 Difficulty Tiers • Wave Survival</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" class="py-20 bg-[#0f1c3f]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-amber-300 font-extrabold uppercase tracking-widest text-sm">World &amp; Adventure</span>
+        <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-1">Soar Through Whimsical Skies</h2>
+        <p class="text-sky-200 font-semibold mt-3">Tap any artwork to inspect full-screen. Battle clockwork sky-patrols over twilight rooftops or cruise past sunlit world wonders.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-7">
+        <button onclick="openLightbox('assets/twilight-battle.jpg', 'Clockwork Town at Twilight — Face White-Night Watch airships and Gearwing griffins over wind-up rooftops.')" class="group text-left rounded-3xl overflow-hidden bg-[#172a5c] border-2 border-white/15 hover:border-amber-300 transition shadow-xl">
+          <div class="overflow-hidden aspect-video">
+            <img src="assets/twilight-battle.jpg" alt="Twilight Clockwork Town Battle" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+          </div>
+          <div class="p-5">
+            <h3 class="font-display text-xl font-bold text-amber-300">Clockwork Town Defense</h3>
+            <p class="text-sky-100/85 text-sm font-semibold mt-1">Weave past wind-up rooftops at dusk and outmaneuver whimsical steampunk airships.</p>
+          </div>
+        </button>
+
+        <button onclick="openLightbox('assets/world-tour.jpg', 'Global Landmarks Tour — Fly past golden pyramids, coastal lighthouses, and alpine peaks.')" class="group text-left rounded-3xl overflow-hidden bg-[#172a5c] border-2 border-white/15 hover:border-amber-300 transition shadow-xl">
+          <div class="overflow-hidden aspect-video">
+            <img src="assets/world-tour.jpg" alt="Global Landmarks Tour" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+          </div>
+          <div class="p-5">
+            <h3 class="font-display text-xl font-bold text-sky-300">World Landmarks Tour</h3>
+            <p class="text-sky-100/85 text-sm font-semibold mt-1">Explore vibrant skies spanning ancient pyramids, snowy cable-car peaks, and sunny harbors.</p>
+          </div>
+        </button>
+
+        <button onclick="openLightbox('assets/star-rush.jpg', 'Star Coin Multiplier Rush — Chain golden stars to boost your score multiplier across escalating waves.')" class="group text-left rounded-3xl overflow-hidden bg-[#172a5c] border-2 border-white/15 hover:border-amber-300 transition shadow-xl">
+          <div class="overflow-hidden aspect-video">
+            <img src="assets/star-rush.jpg" alt="Star Coin Multiplier Rush" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+          </div>
+          <div class="p-5">
+            <h3 class="font-display text-xl font-bold text-emerald-300">Star Coin Rush</h3>
+            <p class="text-sky-100/85 text-sm font-semibold mt-1">Collect floating golden star coins to chain multipliers and survive intense enemy waves.</p>
+          </div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="modes" class="py-20 bg-gradient-to-b from-[#132452] to-[#0f1c3f] border-y border-white/10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <h2 class="font-display text-4xl sm:text-5xl font-bold text-white">Choose Flight Difficulty</h2>
+        <p class="text-sky-200 font-semibold mt-2">Select your flight adventure mode before takeoff — built for young pilots and seasoned arcade aces alike.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="rounded-3xl bg-[#192f66]/90 p-7 frame-easy flex flex-col items-center text-center">
+          <div class="w-16 h-16 rounded-full bg-sky-300/20 border-2 border-[#2ee5b5] flex items-center justify-center text-3xl mb-3">☁️</div>
+          <h3 class="font-display text-3xl font-bold text-[#2ee5b5] tracking-wide">EASY</h3>
+          <p class="text-sky-200 font-bold text-sm">Little Pilot</p>
+          <div class="flex gap-1.5 my-4 text-xl" aria-label="5 Hearts"><span>❤️</span><span>❤️</span><span>❤️</span><span>❤️</span><span>❤️</span></div>
+          <ul class="text-left text-sky-50 font-semibold space-y-2 text-sm w-full border-t border-white/15 pt-4">
+            <li>• Slower enemy flight</li>
+            <li>• Forgiving damage (5 Hearts)</li>
+            <li>• Relaxed wave ramp</li>
+            <li>• Perfect for little kids</li>
+          </ul>
+        </div>
+
+        <div class="rounded-3xl bg-[#192f66]/90 p-7 frame-normal flex flex-col items-center text-center md:-translate-y-3">
+          <div class="w-16 h-16 rounded-full bg-amber-300/20 border-2 border-[#ffd43b] flex items-center justify-center text-3xl mb-3">🪖</div>
+          <h3 class="font-display text-3xl font-bold text-[#ffd43b] tracking-wide">NORMAL</h3>
+          <p class="text-sky-200 font-bold text-sm">Sky Cadet</p>
+          <div class="flex gap-1.5 my-4 text-xl" aria-label="3 Hearts"><span>❤️</span><span>❤️</span><span>❤️</span></div>
+          <ul class="text-left text-sky-50 font-semibold space-y-2 text-sm w-full border-t border-white/15 pt-4">
+            <li>• Standard arcade speed</li>
+            <li>• Balanced combat rhythm</li>
+            <li>• Progressive wave ramp</li>
+            <li>• The classic adventure</li>
+          </ul>
+        </div>
+
+        <div class="rounded-3xl bg-[#192f66]/90 p-7 frame-hard flex flex-col items-center text-center">
+          <div class="w-16 h-16 rounded-full bg-rose-400/20 border-2 border-[#ff6b6b] flex items-center justify-center text-3xl mb-3">🥽</div>
+          <h3 class="font-display text-3xl font-bold text-[#ff6b6b] tracking-wide">HARD</h3>
+          <p class="text-sky-200 font-bold text-sm">Ace Aviator</p>
+          <div class="flex gap-1.5 my-4 text-xl" aria-label="2 Hearts"><span>❤️</span><span>❤️</span></div>
+          <ul class="text-left text-sky-50 font-semibold space-y-2 text-sm w-full border-t border-white/15 pt-4">
+            <li>• Fast &amp; tough enemies</li>
+            <li>• Rapid projectile volleys</li>
+            <li>• Steeper survival ramp</li>
+            <li>• Built for true ace pilots</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rankings" class="py-20 bg-[#0f1c3f]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-10">
+        <h2 class="font-display text-4xl font-bold text-white">Flight Rankings</h2>
+        <p class="text-sky-200 font-semibold mt-1">Compete on Local Top 10 and Global Rankings across every difficulty tier</p>
+      </div>
+
+      <div class="rounded-3xl bg-[#162857] border-4 border-[#2ee5b5] p-6 sm:p-8 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-white/15">
+          <div class="flex gap-2">
+            <span class="px-4 py-1.5 rounded-full bg-sky-500/30 border border-sky-300 text-white font-bold text-sm">GLOBAL RANKINGS</span>
+            <span class="px-4 py-1.5 rounded-full bg-white/5 text-sky-200 font-bold text-sm">LOCAL TOP 10</span>
+          </div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-amber-300">Tracks Score • Wave • Flight Time</span>
+        </div>
+
+        <div class="mt-5 space-y-3 font-bold text-sm sm:text-base">
+          <div class="grid grid-cols-4 items-center px-4 py-3 rounded-2xl bg-amber-400/15 border border-amber-300/60 text-amber-200">
+            <span>#1 🏆</span>
+            <span>Ace Pilot</span>
+            <span class="text-right">617 pts</span>
+            <span class="text-right text-xs sm:text-sm text-sky-200">Wave 3 • 00:51</span>
+          </div>
+          <div class="grid grid-cols-4 items-center px-4 py-3 rounded-2xl bg-white/5 text-sky-100">
+            <span>#2 🥈</span>
+            <span>Sky Cadet</span>
+            <span class="text-right">313 pts</span>
+            <span class="text-right text-xs sm:text-sm text-sky-300">Wave 2 • 00:34</span>
+          </div>
+          <div class="grid grid-cols-4 items-center px-4 py-3 rounded-2xl bg-white/5 text-sky-100">
+            <span>#3 🥉</span>
+            <span>Dino Flyer</span>
+            <span class="text-right">297 pts</span>
+            <span class="text-right text-xs sm:text-sm text-sky-300">Wave 2 • 00:33</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install" class="py-20 bg-gradient-to-b from-[#132452] to-[#0a132c] border-t border-white/10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-amber-300 font-extrabold uppercase tracking-widest text-sm">Quick Setup</span>
+        <h2 class="font-display text-4xl font-bold text-white mt-1">How to Install on Android</h2>
+        <p class="text-sky-200 font-semibold mt-2">Because Gaby's Skyventure is distributed directly as a free APK, follow these three quick steps on your phone:</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="rounded-3xl bg-[#172a5c] border border-white/15 p-6">
+          <div class="w-11 h-11 rounded-2xl bg-amber-400 text-slate-900 font-display font-bold text-xl flex items-center justify-center mb-4">1</div>
+          <h3 class="font-display text-xl font-bold text-white mb-2">Download the APK</h3>
+          <p class="text-sky-100/85 text-sm font-semibold leading-relaxed">
+            Tap any <strong>Download APK</strong> button on this page. If Chrome asks <em>"File might be harmful"</em>, tap <strong>Download anyway</strong> (this is standard for all non-Play Store APKs).
+          </p>
+        </div>
+
+        <div class="rounded-3xl bg-[#172a5c] border border-white/15 p-6">
+          <div class="w-11 h-11 rounded-2xl bg-sky-400 text-slate-900 font-display font-bold text-xl flex items-center justify-center mb-4">2</div>
+          <h3 class="font-display text-xl font-bold text-white mb-2">Allow Browser Installs</h3>
+          <p class="text-sky-100/85 text-sm font-semibold leading-relaxed">
+            Open the downloaded file from your notifications or <strong>Files</strong> app. If prompted, tap <strong>Settings</strong> and toggle on <strong>Allow from this source</strong>.
+          </p>
+        </div>
+
+        <div class="rounded-3xl bg-[#172a5c] border border-white/15 p-6">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-400 text-slate-900 font-display font-bold text-xl flex items-center justify-center mb-4">3</div>
+          <h3 class="font-display text-xl font-bold text-white mb-2">Tap Install &amp; Fly!</h3>
+          <p class="text-sky-100/85 text-sm font-semibold leading-relaxed">
+            Tap <strong>Install</strong>, launch <strong>Gaby's Skyventure</strong> from your home screen, pick your flight difficulty, and take off!
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-14 text-center">
+        <a href="https://github.com/IsaacSabir/gabys-skyventure-demo/releases/download/v0.0.5/Skyventure.apk" class="toy-btn toy-btn-gold px-10 py-4 text-xl">
+          <span>Download Gaby's Skyventure v0.0.5 (.APK)</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-8 bg-[#080f24] border-t border-white/10 text-center text-sky-300/75 text-sm font-semibold">
+    <p>© 2026 Gaby's Skyventure • Hosted on GitHub Pages</p>
+  </footer>
+
+  <div id="lightbox" onclick="closeLightbox()" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="max-w-5xl w-full bg-[#132554] border-4 border-amber-300 rounded-3xl overflow-hidden shadow-2xl">
+      <img id="lightbox-img" src="" alt="Expanded artwork" class="w-full max-h-[75vh] object-contain bg-black" />
+      <div class="p-4 sm:p-5 flex items-center justify-between gap-4">
+        <p id="lightbox-caption" class="text-sky-100 font-bold text-sm sm:text-base"></p>
+        <button onclick="closeLightbox()" class="toy-btn toy-btn-teal px-5 py-2 text-sm shrink-0">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openLightbox(src, caption) {
+      const box = document.getElementById('lightbox');
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-caption').textContent = caption;
+      box.classList.remove('hidden');
+      box.classList.add('flex');
+    }
+
+    function closeLightbox() {
+      const box = document.getElementById('lightbox');
+      box.classList.add('hidden');
+      box.classList.remove('flex');
+    }
+  </script>
+</body>
+</html>
